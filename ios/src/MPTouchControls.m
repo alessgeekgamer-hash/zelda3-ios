@@ -68,7 +68,7 @@ typedef NS_ENUM(NSInteger, MDPlacement) {
 
 // Everything the overlay does not claim (the empty screen) returns nil, and
 // UIKit routes the touch to the window below — SDL's.
-- (UIView *)hitTest:(CGPoint)point withEvent:(UIEvent *)event {
+- (nullable UIView *)hitTest:(CGPoint)point withEvent:(nullable UIEvent *)event {
   UIView *hit = [super hitTest:point withEvent:event];
   if (hit == nil)
     return nil;
@@ -82,19 +82,19 @@ typedef NS_ENUM(NSInteger, MDPlacement) {
   [self.owner layoutControlsInBounds:self.bounds safeInsets:self.safeAreaInsets];
 }
 
-- (void)touchesBegan:(NSSet<UITouch *> *)touches withEvent:(UIEvent *)event {
+- (void)touchesBegan:(NSSet<UITouch *> *)touches withEvent:(nullable UIEvent *)event {
   [self.owner handleTouchesBegan:touches];
 }
 
-- (void)touchesMoved:(NSSet<UITouch *> *)touches withEvent:(UIEvent *)event {
+- (void)touchesMoved:(NSSet<UITouch *> *)touches withEvent:(nullable UIEvent *)event {
   [self.owner handleTouchesMoved:touches];
 }
 
-- (void)touchesEnded:(NSSet<UITouch *> *)touches withEvent:(UIEvent *)event {
+- (void)touchesEnded:(NSSet<UITouch *> *)touches withEvent:(nullable UIEvent *)event {
   [self.owner handleTouchesEnded:touches];
 }
 
-- (void)touchesCancelled:(NSSet<UITouch *> *)touches withEvent:(UIEvent *)event {
+- (void)touchesCancelled:(NSSet<UITouch *> *)touches withEvent:(nullable UIEvent *)event {
   [self.owner handleTouchesEnded:touches];
 }
 
