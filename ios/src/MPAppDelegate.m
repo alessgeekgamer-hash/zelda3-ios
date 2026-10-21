@@ -231,7 +231,25 @@ static void MDAtExitHandler(void) {
   (void)reopened;
   setvbuf(stderr, NULL, _IONBF, 0);
   dup2(fileno(stderr), STDOUT_FILENO);  // zelda3's printf diagnostics too
-  MDAudioDiagnosticsLog();               // pre-game state (driver still NULL)
+
+  // iOS defaults an unconfigured audio session to SoloAmbient, which obeys
+  // the silent switch — and SDL's own session update left it there (see the
+  // [audio] lines). Force Playback (ignores silent mode) before SDL opens
+  // the device, and tell SDL to keep that category when it configures the
+  // session itself. The result is logged either way.
+  SDL_SetHint(SDL_HINT_AUDIO_CATEGORY, "playback");
+  AVAudioSession *session = [AVAudioSession sharedInstance];
+  NSError *categoryError = nil;
+  BOOL categoryOk = [session setCategory:AVAudioSessionCategoryPlayback
+                                    mode:AVAudioSessionModeDefault
+                                 options:0
+                                   error:&categoryError];
+  NSError *activeError = nil;
+  BOOL activeOk = [session setActive:YES error:&activeError];
+  NSString *errDesc = categoryError.localizedDescription ?: activeError.localizedDescription ?: @"(ninguno)";
+  fprintf(stderr, "[audio-init] setCategory_ok=%d activo_ok=%d error=%s\n", (int)categoryOk,
+          (int)activeOk, errDesc.UTF8String);
+  MDAudioDiagnosticsLog();  // pre-game state (driver still NULL)
 
   [self hideLauncher];
   if (self.touchControls == nil)
