@@ -1,0 +1,45 @@
+name: iOS
+
+on:
+  push:
+    paths:
+      - 'ios/**'
+      - 'patches/**'
+      - '.github/workflows/ios.yml'
+  workflow_dispatch:
+
+jobs:
+  ipa:
+    name: Build IPA
+    runs-on: macos-latest
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          submodules: recursive
+
+      - name: Configure
+        run: >
+          cmake -S ios -B build-ios -G Xcode
+          -DCMAKE_SYSTEM_NAME=iOS
+          -DCMAKE_OSX_SYSROOT=iphoneos
+          -DCMAKE_OSX_DEPLOYMENT_TARGET=14.0
+
+      - name: Build
+        run: cmake --build build-ios --config Release
+
+      - name: Package IPA
+        run: |
+          set -euo pipefail
+          APP_PATH=$(find build-ios -name 'zelda3.app' -type d | head -n 1)
+          test -n "$APP_PATH" || { echo "zelda3.app not found"; find build-ios -maxdepth 3; exit 1; }
+          mkdir -p ipa/Payload
+          cp -R "$APP_PATH" ipa/Payload/
+          cd ipa
+          zip -qry ../zelda3.ipa Payload
+          cd ..
+          ls -la zelda3.ipa
+
+      - uses: actions/upload-artifact@v4
+        with:
+          name: zelda3-ipa
+          path: zelda3.ipa

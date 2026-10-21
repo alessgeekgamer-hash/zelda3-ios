@@ -1,0 +1,13 @@
+diff --git a/src/main.c b/src/main.c
+--- a/src/main.c
++++ b/src/main.c
+@@ -279,3 +279,8 @@
+ #undef main
+-int main(int argc, char** argv) {
++#if defined(__IPHONEOS__)
++int zelda3_main(int argc, char** argv)
++#else
++int main(int argc, char** argv)
++#endif
++{
+   argc--, argv++;
