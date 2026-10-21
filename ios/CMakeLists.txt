@@ -69,11 +69,20 @@ file(GLOB ZELDA3_SOURCES
   ${ZELDA3_PATCHED}/snes/*.c
 )
 
+# The BPS patch (ROM -> zelda3_assets.dat) ships inside the bundle; the
+# launcher copies it to Documents on first run.
+set(ZELDA3_BPS ${ZELDA3_IOS_ROOT}/../app/src/main/assets/zelda3_assets.bps)
+if(NOT EXISTS ${ZELDA3_BPS})
+  message(FATAL_ERROR "Missing ${ZELDA3_BPS}")
+endif()
+set_source_files_properties(${ZELDA3_BPS} PROPERTIES MACOSX_PACKAGE_LOCATION Resources)
+
 add_executable(zelda3 MACOSX_BUNDLE
   src/ios_main.c
   src/MPAppDelegate.m
   src/MPTouchControls.m
   ${ZELDA3_SOURCES}
+  ${ZELDA3_BPS}
   ${ZELDA3_DIR}/third_party/gl_core/gl_core_3_1.c
   ${ZELDA3_DIR}/third_party/opus-1.3.1-stripped/opus_decoder_amalgam.c
 )
@@ -110,7 +119,6 @@ target_link_libraries(zelda3 PRIVATE
 
 set_target_properties(zelda3 PROPERTIES
   MACOSX_BUNDLE_INFO_PLIST ${ZELDA3_IOS_ROOT}/Info.plist
-  RESOURCE "${ZELDA3_IOS_ROOT}/../app/src/main/assets/zelda3_assets.bps"
   XCODE_ATTRIBUTE_CLANG_ENABLE_OBJC_ARC YES
   XCODE_ATTRIBUTE_PRODUCT_BUNDLE_IDENTIFIER "io.github.alessgeekgamer.zelda3"
   XCODE_ATTRIBUTE_TARGETED_DEVICE_FAMILY "1"
