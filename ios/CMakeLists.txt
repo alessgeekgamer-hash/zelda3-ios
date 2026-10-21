@@ -77,12 +77,17 @@ if(NOT EXISTS ${ZELDA3_BPS})
 endif()
 set_source_files_properties(${ZELDA3_BPS} PROPERTIES MACOSX_PACKAGE_LOCATION Resources)
 
+# App icons (legacy CFBundleIconFiles): plain PNGs in the bundle's Resources.
+file(GLOB IOS_ICONS ${ZELDA3_IOS_ROOT}/icons/*.png)
+set_source_files_properties(${IOS_ICONS} PROPERTIES MACOSX_PACKAGE_LOCATION Resources)
+
 add_executable(zelda3 MACOSX_BUNDLE
   src/ios_main.c
   src/MPAppDelegate.m
   src/MPTouchControls.m
   ${ZELDA3_SOURCES}
   ${ZELDA3_BPS}
+  ${IOS_ICONS}
   ${ZELDA3_DIR}/third_party/gl_core/gl_core_3_1.c
   ${ZELDA3_DIR}/third_party/opus-1.3.1-stripped/opus_decoder_amalgam.c
 )

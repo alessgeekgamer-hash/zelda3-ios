@@ -32,14 +32,15 @@ jobs:
           set -euo pipefail
           APP_PATH=$(find build-ios -name 'zelda3.app' -type d | head -n 1)
           test -n "$APP_PATH" || { echo "zelda3.app not found"; find build-ios -maxdepth 3; exit 1; }
+          IPA_NAME="Zelda A Link to the Past (iPhone).ipa"
           mkdir -p ipa/Payload
           cp -R "$APP_PATH" ipa/Payload/
           cd ipa
-          zip -qry ../zelda3.ipa Payload
+          zip -qry "../$IPA_NAME" Payload
           cd ..
-          ls -la zelda3.ipa
+          ls -la "$IPA_NAME"
 
       - uses: actions/upload-artifact@v4
         with:
-          name: zelda3-ipa
-          path: zelda3.ipa
+          name: Zelda A Link to the Past (iPhone)
+          path: Zelda A Link to the Past (iPhone).ipa

@@ -93,10 +93,10 @@ android {
         debug {
             // Installs next to the release build, so testing never wipes the real saves.
             applicationIdSuffix = ".debug"
-            resValue("string", "app_name", "Moon Pearl debug")
+            resValue("string", "app_name", "Zelda A Link to the Past")
         }
         release {
-            resValue("string", "app_name", "Moon Pearl")
+            resValue("string", "app_name", "Zelda A Link to the Past")
             signingConfig = signingConfigs.findByName("release")
             isMinifyEnabled = true
             isShrinkResources = true

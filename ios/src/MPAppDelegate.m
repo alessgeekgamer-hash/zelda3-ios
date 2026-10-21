@@ -275,7 +275,7 @@ static void MDAtExitHandler(void) {
   [super viewDidLoad];
   self.view.backgroundColor = UIColor.blackColor;
 
-  _titleLabel = [self labelWithText:@"THE LEGEND OF ZELDA\nA LINK TO THE PAST"
+  _titleLabel = [self labelWithText:@"ZELDA\nA LINK TO THE PAST"
                                size:24
                                bold:YES
                               color:UIColor.whiteColor];

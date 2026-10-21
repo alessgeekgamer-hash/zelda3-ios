@@ -30,7 +30,10 @@ jobs:
       - name: Build and test
         run: ./gradlew testDebugUnitTest assembleDebug --console=plain
 
+      - name: Name the APK
+        run: mv app/build/outputs/apk/debug/app-debug.apk "app/build/outputs/apk/debug/Zelda A Link to the Past (Android).apk"
+
       - uses: actions/upload-artifact@v4
         with:
-          name: moonpearl-debug
+          name: Zelda A Link to the Past (Android)
           path: app/build/outputs/apk/debug/*.apk

@@ -17,7 +17,7 @@ La workflow `.github/workflows/ios.yml` compila la IPA en un runner macOS:
 1. En este repositorio, entra en la pestaña **Actions** → **iOS**.
 2. Si no hay ejecuciones, pulsa **Run workflow** (botón gris a la derecha).
 3. Cuando termine (✅ verde), entra en la ejecución, baja hasta
-   **Artifacts** y descarga **`zelda3-ipa`** (es un `.zip` con `zelda3.ipa`
+   **Artifacts** y descarga **`Zelda A Link to the Past (iPhone)`** (es un `.zip` con `Zelda A Link to the Past (iPhone).ipa`
    dentro).
 
 > Los artifacts duran 90 días. Después, vuelve a pulsar *Run workflow*.
@@ -29,7 +29,7 @@ iOS solo ejecuta apps firmadas. Con tu Apple ID gratuito:
 1. En PC (Windows/Mac), instala [Sideloadly](https://sideloadly.io/) o
    [AltStore](https://altstore.io/) con [AltServer](https://altstore.io/).
 2. Conecta el iPhone por USB (o en red, según la herramienta).
-3. Arrastra `zelda3.ipa` y firma con tu Apple ID (nunca la contraseña real:
+3. Arrastra `Zelda A Link to the Past (iPhone).ipa` y firma con tu Apple ID (nunca la contraseña real:
    la App Store Specific Password si te lo pide).
 4. En el iPhone: *Ajustes → General → VPN y administración de dispositivo* →
    confiar en tu ID de desarrollador.
