@@ -97,24 +97,25 @@ target_compile_definitions(zelda3 PRIVATE SYSTEM_VOLUME_MIXER_AVAILABLE=0)
 target_compile_options(zelda3 PRIVATE -O2 -Wno-unused-value -Wno-parentheses -Wno-dangling-else)
 
 # SDL links its Apple frameworks PRIVATE, so an app consuming SDL2-static
-# from add_subdirectory() has to link them itself.
+# from add_subdirectory() has to link them itself. Explicit -framework flags:
+# bare names do not always resolve to the framework in the SDK.
 target_link_libraries(zelda3 PRIVATE
   SDL2::SDL2-static
-  UIKit
-  Foundation
-  CoreGraphics
-  QuartzCore
-  Metal
-  OpenGLES
-  GameController
-  CoreHaptics
-  CoreMotion
-  AudioToolbox
-  AVFoundation
-  CoreAudio
-  CoreVideo
-  CoreMedia
-  Security
+  "-framework UIKit"
+  "-framework Foundation"
+  "-framework CoreGraphics"
+  "-framework QuartzCore"
+  "-framework Metal"
+  "-framework OpenGLES"
+  "-framework GameController"
+  "-framework CoreHaptics"
+  "-framework CoreMotion"
+  "-framework AudioToolbox"
+  "-framework AVFoundation"
+  "-framework CoreAudio"
+  "-framework CoreVideo"
+  "-framework CoreMedia"
+  "-framework Security"
 )
 
 set_target_properties(zelda3 PROPERTIES
