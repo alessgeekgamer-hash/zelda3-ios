@@ -11,7 +11,10 @@
 #import "MPTouchControls.h"
 #import "SDL_uikitappdelegate.h"
 
+#import <AVFoundation/AVFoundation.h>
+
 #include <errno.h>
+#include <SDL.h>
 #include <stdio.h>
 #include <stdlib.h>
 #include <string.h>
@@ -77,6 +80,21 @@ static uint32_t MDCrc32(const uint8_t *bytes, size_t length) {
 }
 
 static BOOL gInGameForAtExit = NO;
+
+// One line into the game's stderr log: the audio driver SDL chose (a silent
+// app usually means "dummy" here) plus the iOS audio session state. Called
+// before the game starts (driver still NULL) and again on the first frame,
+// after SDL_OpenAudioDevice, from ios_main.c's frame hook.
+void MDAudioDiagnosticsLog(void) {
+  AVAudioSession *session = [AVAudioSession sharedInstance];
+  const char *driver = SDL_GetCurrentAudioDriver();
+  NSString *line = [NSString
+      stringWithFormat:@"[audio] driver=%s categoria=%@ volumen=%.2f otra_audio=%d\n",
+                       driver ? driver : "(null)", session.category, session.outputVolume,
+                       (int)session.isOtherAudioPlaying];
+  fputs(line.UTF8String, stderr);
+  fflush(stderr);
+}
 
 // Die() and SDL failures end in exit(), which iOS treats as a crash: leave a
 // marker so the next launch can show the tail of the stderr log.
@@ -212,6 +230,8 @@ static void MDAtExitHandler(void) {
   FILE *reopened = freopen(log.fileSystemRepresentation, "w", stderr);
   (void)reopened;
   setvbuf(stderr, NULL, _IONBF, 0);
+  dup2(fileno(stderr), STDOUT_FILENO);  // zelda3's printf diagnostics too
+  MDAudioDiagnosticsLog();               // pre-game state (driver still NULL)
 
   [self hideLauncher];
   if (self.touchControls == nil)

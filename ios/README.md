@@ -65,6 +65,19 @@ controles táctiles se ocultan mientras se usan.
 
 Atajos del motor (teclado, si conectas uno): `Enter`=Start, `Shift der.`=Select.
 
+## Sin sonido o algún fallo raro: log de diagnóstico
+
+La app guarda un log legible: **Archivos → En este iPhone → Zelda 3 →
+`zelda3_last_error.log`** (también `zelda3_last_error.log` junto al ini).
+
+En la primera partida aparece una línea `[audio] driver=… categoria=…
+volumen=…`:
+
+- `driver=coreaudio` → el audio de SDL está bien; mira categoría/volumen.
+- `driver=dummy` → SDL no llegó a abrir audio en iOS (es el fallo).
+
+Pasa esa línea (y las de alrededor) si necesitas ayuda con el diagnóstico.
+
 ## Guardados
 
 - Partida: `saves/` de la app (se guarda automáticamente al pasar a segundo
